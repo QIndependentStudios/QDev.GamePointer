@@ -22,7 +22,7 @@ namespace QDev.GamePointer.Wpf
 
         private void FocusChangedHandler(object src, AutomationFocusChangedEventArgs args)
         {
-            AutomationElement element = src as AutomationElement;
+            var element = src as AutomationElement;
             try
             {
                 if (element != null && _focusedProcessId != element.Current.ProcessId)
@@ -46,10 +46,7 @@ namespace QDev.GamePointer.Wpf
             var args = new ApplicationFocusChangedEventArgs(newProcessId);
             try
             {
-                using (Process process = Process.GetProcessById(newProcessId))
-                {
-                    args = new ApplicationFocusChangedEventArgs(newProcessId, process.ProcessName);
-                }
+                args = new ApplicationFocusChangedEventArgs(newProcessId, ProcessHelper.GetExecutionPath(newProcessId));
             }
             catch (Exception ex)
             {

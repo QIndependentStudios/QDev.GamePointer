@@ -7,13 +7,13 @@
             ProcessId = processId;
         }
 
-        public ApplicationFocusChangedEventArgs(int processId, string processName)
+        public ApplicationFocusChangedEventArgs(int processId, string processExecutionPath)
             : this(processId)
         {
-            ProcessName = processName;
+            ProcessExecutionPath = processExecutionPath;
         }
 
         public int ProcessId { get; }
-        public string ProcessName { get; }
+        public string ProcessExecutionPath { get; }
     }
 }
