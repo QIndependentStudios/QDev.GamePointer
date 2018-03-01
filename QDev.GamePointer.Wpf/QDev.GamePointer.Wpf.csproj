@@ -206,5 +206,19 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\QDev.GamePointer.Abstract\QDev.GamePointer.Abstract.csproj">
+      <Project>{29B7664B-0A0A-4C96-8AF4-D77BEDBC176C}</Project>
+      <Name>QDev.GamePointer.Abstract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\QDev.GamePointer.Model\QDev.GamePointer.Model.csproj">
+      <Project>{6265B559-68ED-4D3C-BFA2-77C0BE4E4D2C}</Project>
+      <Name>QDev.GamePointer.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\QDev.GamePointer.Persist\QDev.GamePointer.Persist.csproj">
+      <Project>{0C8E8856-E304-4D69-8AFD-7BE3A8FB42E6}</Project>
+      <Name>QDev.GamePointer.Persist</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
