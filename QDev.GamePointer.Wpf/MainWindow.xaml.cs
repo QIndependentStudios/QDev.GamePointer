@@ -8,8 +8,6 @@ namespace QDev.GamePointer.Wpf
 
         private readonly ApplicationFocusWatcher _watcher;
 
-        private bool _isMouseAccelerationOn = true;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -20,17 +18,16 @@ namespace QDev.GamePointer.Wpf
 
         private void ApplicationFocusWatcher_ApplicationFocusChanged(object sender, ApplicationFocusChangedEventArgs e)
         {
-            if (e.ProcessName == Match)
+            var isPointerAccelerationOn = SystemPointerHelper.GetEnhancePointerPrecision();
+            if (e.ProcessName == Match && isPointerAccelerationOn)
             {
-                if (_isMouseAccelerationOn)
-                    ToastNotificationHelper.Show("Game Pointer", "Mouse acceleration turned off.");
-                _isMouseAccelerationOn = MouseAccelerationHelper.ToggleEnhancePointerPrecision(false);
+                SystemPointerHelper.SetEnhancePointerPrecision(false);
+                ToastNotificationHelper.Show("Game Pointer", "Mouse acceleration turned off.");
             }
-            else
+            else if (e.ProcessName != Match && !isPointerAccelerationOn)
             {
-                if (!_isMouseAccelerationOn)
-                    ToastNotificationHelper.Show("Game Pointer", "Mouse acceleration turned on.");
-                _isMouseAccelerationOn = MouseAccelerationHelper.ToggleEnhancePointerPrecision(true);
+                SystemPointerHelper.SetEnhancePointerPrecision(true);
+                ToastNotificationHelper.Show("Game Pointer", "Mouse acceleration turned on.");
             }
         }
     }

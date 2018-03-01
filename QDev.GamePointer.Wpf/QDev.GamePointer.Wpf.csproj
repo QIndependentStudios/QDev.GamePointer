@@ -178,7 +178,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MouseAccelerationHelper.cs" />
+    <Compile Include="PointerAccelerationHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
