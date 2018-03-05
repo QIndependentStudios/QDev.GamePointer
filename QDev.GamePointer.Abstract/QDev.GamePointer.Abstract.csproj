@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IDbPath.cs" />
     <Compile Include="IDeleteRepository.cs" />
     <Compile Include="IUpdateRepository.cs" />
     <Compile Include="IAddRepository.cs" />

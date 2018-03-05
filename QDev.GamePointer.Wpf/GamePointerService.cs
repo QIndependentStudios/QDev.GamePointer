@@ -1,8 +1,9 @@
 ﻿using QDev.GamePointer.Abstract;
 using QDev.GamePointer.Model;
 using QDev.GamePointer.Persist;
+using QDev.GamePointer.Wpf.DbPath;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace QDev.GamePointer.Wpf
@@ -10,13 +11,18 @@ namespace QDev.GamePointer.Wpf
     public class GamePointerService
     {
         private readonly ApplicationFocusWatcher _watcher = new ApplicationFocusWatcher();
-        private readonly List<WatchedExecution> _watchedExecutions;
-        private readonly IGetAllRepository<WatchedExecution> _repo = new WatchedExecutionRepository();
+        private readonly ObservableCollection<WatchedExecution> _watchedExecutions;
+        private readonly IGetAllRepository<WatchedExecution> _repo;
+        private readonly IAddRepository<WatchedExecution> _addRepo;
 
         public GamePointerService()
         {
+            var repo = new WatchedExecutionRepository(new UwpDbPath());
+            _repo = repo;
+            _addRepo = repo;
+
             _watcher.ApplicationFocusChanged += ApplicationFocusWatcher_ApplicationFocusChanged;
-            _watchedExecutions = _repo.GetAll().ToList();
+            _watchedExecutions = new ObservableCollection<WatchedExecution>(_repo.GetAll());
         }
 
         public void Start()
@@ -24,9 +30,11 @@ namespace QDev.GamePointer.Wpf
             _watcher.Start();
         }
 
-        public void AddExecution(WatchedExecution watchedExecution)
+        public async void AddExecution(WatchedExecution watchedExecution)
         {
             _watchedExecutions.Add(watchedExecution);
+            await _addRepo.AddAsync(watchedExecution);
+
         }
 
         public void RemoveExecution(WatchedExecution watchedExecution)
@@ -34,9 +42,9 @@ namespace QDev.GamePointer.Wpf
             _watchedExecutions.Remove(watchedExecution);
         }
 
-        public IReadOnlyCollection<WatchedExecution> GetWatchedExecutions()
+        public ObservableCollection<WatchedExecution> GetWatchedExecutions()
         {
-            return _watchedExecutions.AsReadOnly();
+            return _watchedExecutions;
         }
 
         private void ApplicationFocusWatcher_ApplicationFocusChanged(object sender, ApplicationFocusChangedEventArgs e)

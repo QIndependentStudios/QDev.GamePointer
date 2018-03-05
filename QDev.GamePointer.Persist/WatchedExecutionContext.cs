@@ -1,16 +1,25 @@
 ﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using QDev.GamePointer.Abstract;
 using QDev.GamePointer.Model;
+using System.IO;
 
 namespace QDev.GamePointer.Persist
 {
     public class WatchedExecutionContext : DbContext
     {
+        private readonly IDbPath _dbPath;
         public DbSet<WatchedExecution> WatchedExecutions { get; set; }
+
+        public WatchedExecutionContext(IDbPath dbPath)
+        {
+            _dbPath = dbPath;
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connection = new SqliteConnection(@"Filename=D:\Users\qngo\Desktop\Temp\Data.db");
+            var path = Path.Combine(_dbPath.GetPath(), "data.db");
+            var connection = new SqliteConnection($"Filename={path}");
             optionsBuilder.UseSqlite(connection);
         }
 

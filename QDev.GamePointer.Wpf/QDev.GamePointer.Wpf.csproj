@@ -160,6 +160,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DbPath\UwpDbPath.cs" />
     <Compile Include="GamePointerService.cs" />
     <Compile Include="ProcessHelper.cs" />
     <Compile Include="ToastNotificationHelper.cs" />

@@ -2,6 +2,7 @@
 using QDev.GamePointer.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace QDev.GamePointer.Persist
@@ -11,18 +12,26 @@ namespace QDev.GamePointer.Persist
         IUpdateRepository<WatchedExecution>,
         IDeleteRepository<WatchedExecution>
     {
-        public IEnumerable<WatchedExecution> GetAll()
+        private readonly IDbPath _dbPath;
+
+        public WatchedExecutionRepository(IDbPath dbPath)
         {
-            return new List<WatchedExecution>
-            {
-                new WatchedExecution{ Path = @"D:\Program Files (x86)\Overwatch\Overwatch.exe" },
-                new WatchedExecution{ Path = @"D:\Program Files\Epic Games\Fortnite\FortniteGame\Binaries\Win64\FortniteClient-Win64-Shipping.exe" }
-            };
+            _dbPath = dbPath;
         }
 
-        public Task AddAsync(WatchedExecution item)
+        public IEnumerable<WatchedExecution> GetAll()
         {
-            throw new NotImplementedException();
+            using (var db = new WatchedExecutionContext(_dbPath))
+                return db.WatchedExecutions.ToList();
+        }
+
+        public async Task AddAsync(WatchedExecution item)
+        {
+            using (var db = new WatchedExecutionContext(_dbPath))
+            {
+                await db.WatchedExecutions.AddAsync(item);
+                await db.SaveChangesAsync();
+            }
         }
 
         public Task UpdateAsync(WatchedExecution item)

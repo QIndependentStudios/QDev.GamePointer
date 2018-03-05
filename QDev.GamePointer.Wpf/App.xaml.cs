@@ -1,4 +1,5 @@
 ﻿using QDev.GamePointer.Persist;
+using QDev.GamePointer.Wpf.DbPath;
 using System.Windows;
 
 namespace QDev.GamePointer.Wpf
@@ -7,7 +8,7 @@ namespace QDev.GamePointer.Wpf
     {
         public App()
         {
-            AppData.Initialize();
+            AppData.Initialize(new UwpDbPath());
         }
     }
 }
