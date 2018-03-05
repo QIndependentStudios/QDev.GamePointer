@@ -116,6 +116,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppData.cs" />
     <Compile Include="Migrations\20180305182752_InitialCreation.cs" />
     <Compile Include="Migrations\20180305182752_InitialCreation.designer.cs">
       <DependentUpon>20180305182752_InitialCreation.cs</DependentUpon>

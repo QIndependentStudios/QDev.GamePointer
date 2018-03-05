@@ -8,12 +8,6 @@ namespace QDev.GamePointer.Persist
     {
         public DbSet<WatchedExecution> WatchedExecutions { get; set; }
 
-        public async static void Initialize()
-        {
-            using (var db = new WatchedExecutionContext())
-                await db.Database.EnsureCreatedAsync();
-        }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var connection = new SqliteConnection(@"Filename=D:\Users\qngo\Desktop\Temp\Data.db");

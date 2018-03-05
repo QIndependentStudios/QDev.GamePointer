@@ -7,7 +7,7 @@ namespace QDev.GamePointer.Wpf
     {
         public App()
         {
-            WatchedExecutionContext.Initialize();
+            AppData.Initialize();
         }
     }
 }
