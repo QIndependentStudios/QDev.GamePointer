@@ -14,12 +14,16 @@ namespace QDev.GamePointer.Wpf
         private readonly ObservableCollection<WatchedExecution> _watchedExecutions;
         private readonly IGetAllRepository<WatchedExecution> _repo;
         private readonly IAddRepository<WatchedExecution> _addRepo;
+        private readonly IUpdateRepository<WatchedExecution> _updateRepo;
+        private readonly IDeleteRepository<int> _deleteRepo;
 
         public GamePointerService()
         {
             var repo = new WatchedExecutionRepository(new UwpDbPath());
             _repo = repo;
             _addRepo = repo;
+            _updateRepo = repo;
+            _deleteRepo = repo;
 
             _watcher.ApplicationFocusChanged += ApplicationFocusWatcher_ApplicationFocusChanged;
             _watchedExecutions = new ObservableCollection<WatchedExecution>(_repo.GetAll());
@@ -30,16 +34,34 @@ namespace QDev.GamePointer.Wpf
             _watcher.Start();
         }
 
-        public async void AddExecution(WatchedExecution watchedExecution)
+        public async void SaveExecution(WatchedExecution watchedExecution)
         {
-            _watchedExecutions.Add(watchedExecution);
-            await _addRepo.AddAsync(watchedExecution);
-
+            if (watchedExecution.WatchedExecutionId == 0)
+            {
+                await _addRepo.AddAsync(watchedExecution);
+                _watchedExecutions.Add(watchedExecution);
+            }
+            else
+            {
+                var insertIndex = _watchedExecutions.IndexOf(_watchedExecutions.FirstOrDefault(x => x.WatchedExecutionId == watchedExecution.WatchedExecutionId));
+                RemoveById(watchedExecution.WatchedExecutionId);
+                await _updateRepo.UpdateAsync(watchedExecution);
+                _watchedExecutions.Insert(insertIndex, watchedExecution);
+            }
         }
 
-        public void RemoveExecution(WatchedExecution watchedExecution)
+        public async void RemoveExecution(int id)
         {
-            _watchedExecutions.Remove(watchedExecution);
+            RemoveById(id);
+            await _deleteRepo.DeleteAsync(id);
+        }
+
+        private void RemoveById(int id)
+        {
+            foreach (var item in _watchedExecutions.Where(x => x.WatchedExecutionId == id).ToList())
+            {
+                _watchedExecutions.Remove(item);
+            }
         }
 
         public ObservableCollection<WatchedExecution> GetWatchedExecutions()

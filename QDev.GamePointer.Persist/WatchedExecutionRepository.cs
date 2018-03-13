@@ -1,6 +1,5 @@
 ﻿using QDev.GamePointer.Abstract;
 using QDev.GamePointer.Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,7 +9,7 @@ namespace QDev.GamePointer.Persist
     public class WatchedExecutionRepository : IGetAllRepository<WatchedExecution>,
         IAddRepository<WatchedExecution>,
         IUpdateRepository<WatchedExecution>,
-        IDeleteRepository<WatchedExecution>
+        IDeleteRepository<int>
     {
         private readonly IDbPath _dbPath;
 
@@ -34,14 +33,22 @@ namespace QDev.GamePointer.Persist
             }
         }
 
-        public Task UpdateAsync(WatchedExecution item)
+        public async Task UpdateAsync(WatchedExecution item)
         {
-            throw new NotImplementedException();
+            using (var db = new WatchedExecutionContext(_dbPath))
+            {
+                db.WatchedExecutions.Update(item);
+                await db.SaveChangesAsync();
+            }
         }
 
-        public Task DeleteAsync(WatchedExecution item)
+        public async Task DeleteAsync(int item)
         {
-            throw new NotImplementedException();
+            using (var db = new WatchedExecutionContext(_dbPath))
+            {
+                db.WatchedExecutions.RemoveRange(db.WatchedExecutions.Where(w => w.WatchedExecutionId == item));
+                await db.SaveChangesAsync();
+            }
         }
     }
 }
