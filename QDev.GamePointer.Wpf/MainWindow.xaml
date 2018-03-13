@@ -9,21 +9,25 @@
         Height="350"
         Width="525">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
         <ListView x:Name="WatchedExecutionsListView"
-                  DisplayMemberPath="Path"/>
-        <TextBox x:Name="NameTextBox"
-                 Grid.Row="1" />
-        <TextBox x:Name="PathTextBox"
-                 Grid.Row="2" />
-        <Button x:Name="AddButton"
-                Content="Add"
-                Grid.Row="3"
-                Click="AddButton_Click" />
+                  DisplayMemberPath="Name" />
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBox x:Name="NameTextBox" />
+            <TextBox x:Name="PathTextBox"
+                     Grid.Row="1" />
+            <Button x:Name="AddButton"
+                    Content="Add"
+                    Grid.Row="2"
+                    Click="AddButton_Click" />
+        </Grid>
     </Grid>
 </Window>
